@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router";
 
 type ApiResponse = {
   message: string;
@@ -7,6 +8,8 @@ type ApiResponse = {
 
 function App() {
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
+  const goToLoginPage = () => navigate("/login");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,6 +28,7 @@ function App() {
     <div>
       <h1>Frontend + Backend Test</h1>
       <p>{message}</p>
+      <button onClick={goToLoginPage}>ログインページ</button>
     </div>
   );
 }
