@@ -1,17 +1,11 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
 import helmet from "helmet";
-import { PrismaClient } from "@prisma/client";
 import session from "express-session";
 import passport from "passport";
-import { Strategy as LocalStrategy } from "passport-local";
-import bcrypt from "bcrypt";
-import { register } from "module";
 import { registerRouter } from "./routes/api/register";
 import { configurePassport } from "./config/passport";
 import { authRouter } from "./routes/api/auth";
-
-const prisma = new PrismaClient();
 
 const app = express();
 const port = process.env.PORT || 3001;
