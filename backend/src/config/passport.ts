@@ -9,6 +9,7 @@ const prisma = new PrismaClient();
 // ユーザーがログインする際に呼び出される
 export const configurePassport = () => {
   passport.use(
+    "local",
     new LocalStrategy(
       {
         usernameField: "email", // クライアントからのフィールド名
