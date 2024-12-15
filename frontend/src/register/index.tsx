@@ -12,9 +12,28 @@ export const RegisterPage: FC = () => {
   const navigate = useNavigate();
   const goToHomePage = () => navigate("/");
   const goToLoginPage = () => navigate("/login");
+  const goToAuthPage = () => navigate("/auth");
 
   const { register, handleSubmit } = useForm<IFormInput>();
-  const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    try {
+      const response = await fetch("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      if (response.ok) {
+        alert("登録が完了しました");
+        goToAuthPage();
+      } else {
+        alert("登録に失敗しました");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
   return (
     <>
       <h1>登録ページ</h1>
