@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 import App from "./App";
 import { LoginPage } from "./login";
