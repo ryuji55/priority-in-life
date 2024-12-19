@@ -1,12 +1,12 @@
-import axios from "axios";
 import { FC, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
+import { useLoginMutation } from "../store/api/authApi";
 
 type IFormInput = {
-  firstName: String;
-  email: String;
-  password: String;
+  firstName: string;
+  email: string;
+  password: string;
 };
 
 export const LoginPage: FC = () => {
@@ -16,24 +16,16 @@ export const LoginPage: FC = () => {
   const goToAuthPage = () => navigate("/auth");
   const [error, setError] = useState<string | null>(null);
 
+  const [mutation] = useLoginMutation();
+
   const { register, handleSubmit } = useForm<IFormInput>();
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     try {
-      await axios.post("/api/auth/login", data);
+      await mutation({ email: data.email, password: data.password }).unwrap();
       console.log("ログイン成功");
       goToAuthPage();
     } catch (error: any) {
-      if (error.response) {
-        // サーバーからのエラーレスポンス
-        const message = error.response.data?.error || "ログインに失敗しました";
-        setError(message);
-      } else if (error.request) {
-        // リクエストは送信されたがレスポンスを受け取れなかった
-        setError("サーバーからの応答がありません");
-      } else {
-        // リクエストの作成時に何か問題が発生
-        setError("予期せぬエラーが発生しました");
-      }
+      setError(error?.data?.error || "予期せぬエラーが発生しました");
     }
   };
 
