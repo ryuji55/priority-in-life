@@ -1,5 +1,5 @@
+import { useLogout } from "@/common/hooks/useLogout";
 import { FC } from "react";
-import { useLogout } from "../../../common/hooks/useLogout";
 
 export const AuthPage: FC = () => {
   const { handleLogout, error } = useLogout();

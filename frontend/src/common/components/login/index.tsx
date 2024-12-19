@@ -1,7 +1,7 @@
+import { useLogin } from "@/common/hooks/useLogin";
 import { FC } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
-import { useLogin } from "../../hooks/useLogin";
 
 type IFormInput = {
   firstName: string;

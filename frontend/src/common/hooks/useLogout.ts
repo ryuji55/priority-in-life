@@ -1,6 +1,6 @@
+import { useLogoutMutation } from "@/store/api/authApi";
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { useLogoutMutation } from "../../store/api/authApi";
 
 type Return = {
   handleLogout: () => Promise<void>;

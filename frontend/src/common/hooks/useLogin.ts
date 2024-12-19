@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { useLoginMutation } from "../../store/api/authApi";
 import { SubmitHandler } from "react-hook-form";
+import { useLoginMutation } from "@/store/api/authApi";
 
 type Return = {
   onSubmit: SubmitHandler<IFormInput>;

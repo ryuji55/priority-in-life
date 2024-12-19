@@ -1,7 +1,7 @@
+import { useRegister } from "@/common/hooks/useRegister";
 import { FC } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
-import { useRegister } from "../../hooks/useRegister";
 
 type IFormInput = {
   firstName: string;
