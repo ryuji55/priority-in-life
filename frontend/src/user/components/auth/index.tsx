@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import { useNavigate } from "react-router";
-import { useLogoutMutation } from "../../store/api/authApi";
+import { useLogoutMutation } from "../../../store/api/authApi";
 
 export const AuthPage: FC = () => {
   const navigate = useNavigate();

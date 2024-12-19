@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
-import { useLoginMutation } from "../store/api/authApi";
+import { useRegisterMutation } from "../../../store/api/registerApi";
 
 type IFormInput = {
   firstName: string;
@@ -9,31 +9,36 @@ type IFormInput = {
   password: string;
 };
 
-export const LoginPage: FC = () => {
+export const RegisterPage: FC = () => {
   const navigate = useNavigate();
   const goToHomePage = () => navigate("/");
-  const goToRegisterPage = () => navigate("/register");
+  const goToLoginPage = () => navigate("/login");
   const goToAuthPage = () => navigate("/auth");
+
   const [error, setError] = useState<string | null>(null);
 
-  const [mutation] = useLoginMutation();
+  const [mutation] = useRegisterMutation();
 
   const { register, handleSubmit } = useForm<IFormInput>();
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     try {
-      await mutation({ email: data.email, password: data.password }).unwrap();
-      console.log("ログイン成功");
+      await mutation({
+        firstName: data.firstName,
+        email: data.email,
+        password: data.password,
+      }).unwrap();
       goToAuthPage();
     } catch (error: any) {
       setError(error?.data?.error || "予期せぬエラーが発生しました");
     }
   };
-
   return (
     <>
-      <p>{error}</p>
-      <h1>ログインページ</h1>
+      {error && <p>{error}</p>}
+      <h1>登録ページ</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
+        <label>名前</label>
+        <input {...register("firstName")} />
         <label>メールアドレス</label>
         <input {...register("email")} />
         <label>パスワード</label>
@@ -41,7 +46,7 @@ export const LoginPage: FC = () => {
         <input type="submit" />
       </form>
       <button onClick={goToHomePage}>ホームページ</button>
-      <button onClick={goToRegisterPage}>登録ページ</button>
+      <button onClick={goToLoginPage}>ログインページ</button>
     </>
   );
 };
