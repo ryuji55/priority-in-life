@@ -1,6 +1,7 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
+import { useRegisterMutation } from "../store/api/registerApi";
 
 type IFormInput = {
   firstName: string;
@@ -14,28 +15,26 @@ export const RegisterPage: FC = () => {
   const goToLoginPage = () => navigate("/login");
   const goToAuthPage = () => navigate("/auth");
 
+  const [error, setError] = useState<string | null>(null);
+
+  const [mutation] = useRegisterMutation();
+
   const { register, handleSubmit } = useForm<IFormInput>();
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     try {
-      const response = await fetch("/api/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      if (response.ok) {
-        alert("登録が完了しました");
-        goToAuthPage();
-      } else {
-        alert("登録に失敗しました");
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
+      await mutation({
+        firstName: data.firstName,
+        email: data.email,
+        password: data.password,
+      }).unwrap();
+      goToAuthPage();
+    } catch (error: any) {
+      setError(error?.data?.error || "予期せぬエラーが発生しました");
     }
   };
   return (
     <>
+      {error && <p>{error}</p>}
       <h1>登録ページ</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <label>名前</label>
