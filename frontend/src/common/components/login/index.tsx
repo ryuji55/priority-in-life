@@ -1,7 +1,7 @@
-import { FC, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { FC } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
-import { useLoginMutation } from "../../../store/api/authApi";
+import { useLogin } from "../../hooks/useLogin";
 
 type IFormInput = {
   firstName: string;
@@ -13,21 +13,10 @@ export const LoginPage: FC = () => {
   const navigate = useNavigate();
   const goToHomePage = () => navigate("/");
   const goToRegisterPage = () => navigate("/register");
-  const goToAuthPage = () => navigate("/auth");
-  const [error, setError] = useState<string | null>(null);
 
-  const [mutation] = useLoginMutation();
+  const { onSubmit, error } = useLogin();
 
   const { register, handleSubmit } = useForm<IFormInput>();
-  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    try {
-      await mutation({ email: data.email, password: data.password }).unwrap();
-      console.log("ログイン成功");
-      goToAuthPage();
-    } catch (error: any) {
-      setError(error?.data?.error || "予期せぬエラーが発生しました");
-    }
-  };
 
   return (
     <>
