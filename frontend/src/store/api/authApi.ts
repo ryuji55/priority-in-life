@@ -1,4 +1,3 @@
-// src/store/api/authApi.ts
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 interface User {
