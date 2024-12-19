@@ -1,9 +1,9 @@
 import { FC } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 import App from "./App";
-import { LoginPage } from "./login";
-import { RegisterPage } from "./register";
-import { AuthPage } from "./user/auth";
+import { LoginPage } from "./common/components/login";
+import { RegisterPage } from "./common/components/register";
+import { AuthPage } from "./user/components/auth";
 import { useGetMeQuery } from "./store/api/authApi";
 
 type PrivateRouteProps = {

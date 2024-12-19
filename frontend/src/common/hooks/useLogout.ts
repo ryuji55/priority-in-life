@@ -1,8 +1,13 @@
-import { FC, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useLogoutMutation } from "../../store/api/authApi";
 
-export const AuthPage: FC = () => {
+type Return = {
+  handleLogout: () => Promise<void>;
+  error: string | null;
+};
+
+export const useLogout = (): Return => {
   const navigate = useNavigate();
   const goToLoginPage = () => navigate("/login");
   const [error, setError] = useState<string | null>(null);
@@ -18,11 +23,8 @@ export const AuthPage: FC = () => {
     }
   };
 
-  return (
-    <>
-      <p>{error}</p>
-      <h1>ログインしているページ</h1>
-      <button onClick={handleLogout}>ログアウト</button>
-    </>
-  );
+  return {
+    handleLogout,
+    error,
+  };
 };
