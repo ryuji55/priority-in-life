@@ -1,7 +1,16 @@
 import { Router } from "express";
 import passport from "passport";
+import { mailService } from "../../serviece/mail.serviece";
+import { PrismaClient } from "@prisma/client";
+import crypto from "crypto";
 
 const router = Router();
+
+const prisma = new PrismaClient();
+
+const generateResetToken = () => {
+  return crypto.randomBytes(32).toString("hex");
+};
 
 // TODO: any型を直す
 router.get("/me", (req: any, res: any) => {
@@ -53,6 +62,26 @@ router.post("/logout", (req: any, res: any) => {
       res.json({ message: "ログアウトしました" });
     });
   });
+});
+
+router.post("/passwordReset", async (req: any, res: any) => {
+  try {
+    const { email } = req.body;
+
+    const user = await prisma.users.findUnique({ where: { email } });
+    if (!user) {
+      return res.status(404).json({ error: "メールアドレスが見つかりません" });
+    }
+
+    const resetToken = generateResetToken();
+    const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+
+    await mailService.sendPasswordResetMail(email, resetUrl);
+    res.json({ message: "パスワードリセット用のメールを送信しました" });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "パスワードリセット処理に失敗しました" });
+  }
 });
 
 export { router as authRouter };
