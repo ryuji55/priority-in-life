@@ -1,10 +1,10 @@
 import { FC } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router";
-import App from "./App";
 import { LoginPage } from "./common/components/login";
 import { RegisterPage } from "./common/components/register";
 import { AuthPage } from "./user/components/auth";
 import { useGetMeQuery } from "./store/api/authApi";
+import App from "./App";
 
 type PrivateRouteProps = {
   children: React.ReactNode;
