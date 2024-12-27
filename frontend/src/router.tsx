@@ -5,6 +5,7 @@ import { RegisterPage } from "./common/components/register";
 import { AuthPage } from "./user/components/auth";
 import { useGetMeQuery } from "./store/api/authApi";
 import App from "./App";
+import { PasswordResetPage } from "./common/components/passwordReset";
 
 type PrivateRouteProps = {
   children: React.ReactNode;
@@ -29,6 +30,7 @@ export const AppRoute: FC = () => {
         <Route path="/" element={<App />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/passwordReset" element={<PasswordResetPage />} />
         <Route
           path="/auth"
           element={
