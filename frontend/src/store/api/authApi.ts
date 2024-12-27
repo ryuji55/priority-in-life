@@ -11,6 +11,10 @@ type LoginRequest = {
   password: string;
 };
 
+type PasswordForgotRequest = {
+  email: string;
+};
+
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: fetchBaseQuery({ baseUrl: "/api/auth" }),
@@ -31,7 +35,19 @@ export const authApi = createApi({
     getMe: builder.query<User, void>({
       query: () => "me",
     }),
+    passwordForgot: builder.mutation<void, PasswordForgotRequest>({
+      query: (body) => ({
+        url: "password/forgot",
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation, useLogoutMutation, useGetMeQuery } = authApi;
+export const {
+  useLoginMutation,
+  useLogoutMutation,
+  useGetMeQuery,
+  usePasswordForgotMutation,
+} = authApi;

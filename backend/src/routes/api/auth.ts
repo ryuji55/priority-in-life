@@ -64,7 +64,7 @@ router.post("/logout", (req: any, res: any) => {
   });
 });
 
-router.post("/passwordReset", async (req: any, res: any) => {
+router.post("/password/forgot", async (req: any, res: any) => {
   try {
     const { email } = req.body;
 
@@ -74,7 +74,7 @@ router.post("/passwordReset", async (req: any, res: any) => {
     }
 
     const resetToken = generateResetToken();
-    const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+    const resetUrl = `${process.env.FRONTEND_URL}/password/reset/${resetToken}`;
 
     await mailService.sendPasswordResetMail(email, resetUrl);
     res.json({ message: "パスワードリセット用のメールを送信しました" });
