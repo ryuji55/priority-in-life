@@ -22,7 +22,7 @@ export const PasswordForgotPage: FC = () => {
   return (
     <>
       <p>{error}</p>
-      <h1>パスワードリセット</h1>
+      <h1>パスワード変更リクエスト</h1>
       <form onSubmit={onSubmit}>
         <input
           type="email"
