@@ -1,8 +1,10 @@
+import bcrypt from "bcrypt";
 import { Router } from "express";
 import passport from "passport";
 import { mailService } from "../../serviece/mail.serviece";
 import { PrismaClient } from "@prisma/client";
 import crypto from "crypto";
+import dayjs from "dayjs";
 
 const router = Router();
 
@@ -10,6 +12,9 @@ const prisma = new PrismaClient();
 
 const generateResetToken = () => {
   return crypto.randomBytes(32).toString("hex");
+};
+const generateResetPasswordTokenExpiredAt = () => {
+  return dayjs().add(1, "hour").toISOString();
 };
 
 // TODO: any型を直す
@@ -73,11 +78,57 @@ router.post("/password/forgot", async (req: any, res: any) => {
       return res.status(404).json({ error: "メールアドレスが見つかりません" });
     }
 
-    const resetToken = generateResetToken();
-    const resetUrl = `${process.env.FRONTEND_URL}/password/reset/${resetToken}`;
+    const resetPasswordToken = generateResetToken();
+    const resetPasswordTokenExpiredAt = generateResetPasswordTokenExpiredAt();
+
+    await prisma.users.update({
+      where: { id: user.id },
+      data: {
+        resetPasswordToken,
+        resetPasswordTokenExpiredAt,
+      },
+    });
+
+    const resetUrl = `${process.env.FRONTEND_URL}/password/reset/${resetPasswordToken}`;
 
     await mailService.sendPasswordResetMail(email, resetUrl);
     res.json({ message: "パスワードリセット用のメールを送信しました" });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "パスワードリセット処理に失敗しました" });
+  }
+});
+
+router.post("/password/reset", async (req: any, res: any) => {
+  try {
+    const { token, newPassword } = req.body;
+
+    const user = await prisma.users.findFirst({
+      where: {
+        resetPasswordToken: token,
+        resetPasswordTokenExpiredAt: {
+          gt: new Date(),
+        },
+      },
+    });
+
+    if (!user) {
+      return res.status(400).json({
+        error: "パスワードリセットトークンが無効か期限切れです",
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await prisma.users.update({
+      where: { id: user.id },
+      data: {
+        password: hashedPassword,
+        resetPasswordToken: null,
+        resetPasswordTokenExpiredAt: null,
+      },
+    });
+
+    res.json({ message: "パスワードをリセットしました" });
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({ error: "パスワードリセット処理に失敗しました" });
