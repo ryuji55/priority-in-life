@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { usePasswordResetMutation } from "../../store/api/authApi";
 import { SubmitHandler } from "react-hook-form";
+import { ApiErrorResponse, getErrorMessage } from "../constants/errors";
 
 type IFormInput = {
   newPassword: string;
@@ -27,8 +28,9 @@ export const usePasswordReset = (): Return => {
     try {
       await mutation({ token, newPassword }).unwrap();
       goToLoginPage();
-    } catch (error: any) {
-      setError(error?.data?.error || "予期せぬエラーが発生しました");
+    } catch (err) {
+      const apiError = err as ApiErrorResponse;
+      setError(getErrorMessage(apiError?.data?.message));
     }
   };
 
