@@ -1,6 +1,10 @@
 import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
-import { usePasswordForgotMutation } from "../../../../store/api/authApi";
+import { usePasswordForgotMutation } from "../../../../../store/api/authApi";
+import {
+  ApiErrorResponse,
+  getErrorMessage,
+} from "../../../../constants/errors";
 
 type IFormInput = {
   email: string;
@@ -14,8 +18,9 @@ export const PasswordForgotPage: FC = () => {
   const onSubmit = handleSubmit(async (data) => {
     try {
       await mutation(data).unwrap();
-    } catch (error: any) {
-      setError(error?.data?.error || "予期せぬエラーが発生しました");
+    } catch (err) {
+      const apiError = err as ApiErrorResponse;
+      setError(getErrorMessage(apiError?.data?.message));
     }
   });
 
