@@ -23,7 +23,7 @@ export const mailService = {
         `,
       });
     } catch (error) {
-      console.error("Error:", error);
+      console.error("SendMailError:", error);
       throw new Error("メール送信に失敗しました");
     }
   },

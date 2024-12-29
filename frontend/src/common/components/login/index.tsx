@@ -13,6 +13,7 @@ export const LoginPage: FC = () => {
   const navigate = useNavigate();
   const goToHomePage = () => navigate("/");
   const goToRegisterPage = () => navigate("/register");
+  const goToPasswordForgotPage = () => navigate("/password/forgot");
 
   const { onSubmit, error } = useLogin();
 
@@ -31,6 +32,7 @@ export const LoginPage: FC = () => {
       </form>
       <button onClick={goToHomePage}>ホームページ</button>
       <button onClick={goToRegisterPage}>登録ページ</button>
+      <button onClick={goToPasswordForgotPage}>パスワードリセットページ</button>
     </>
   );
 };

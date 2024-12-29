@@ -15,9 +15,7 @@ router.post("/", async (req: any, res: any) => {
     });
 
     if (existingUser) {
-      return res
-        .status(400)
-        .json({ error: "このメールアドレスは既に登録されています" });
+      return res.status(400).json({ message: "EMAIL_IS_ALREADY_REGISTERED" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -33,14 +31,14 @@ router.post("/", async (req: any, res: any) => {
     // 登録後自動的にログイン
     req.login(user, (err: any) => {
       if (err) {
-        return res.status(500).json({ error: "ログインに失敗しました" });
+        return res.status(500).json({ message: "LOGIN_FAILED" });
       }
       const { password: _, ...userWithoutPassword } = user;
       return res.status(201).json({ user: userWithoutPassword });
     });
   } catch (error) {
-    console.error("ユーザ登録エラー:", error);
-    res.status(500).json({ error: "登録に失敗しました" });
+    console.error("RegisterError:", error);
+    res.status(500).end();
   }
 });
 

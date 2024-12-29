@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useLoginMutation } from "../../store/api/authApi";
 import { SubmitHandler } from "react-hook-form";
+import { ApiErrorResponse, getErrorMessage } from "../constants/errors";
 
 type Return = {
   onSubmit: SubmitHandler<IFormInput>;
@@ -26,8 +27,9 @@ export const useLogin = (): Return => {
       await mutation({ email: email, password: password }).unwrap();
       console.log("ログイン成功");
       goToAuthPage();
-    } catch (error: any) {
-      setError(error?.data?.error || "予期せぬエラーが発生しました");
+    } catch (err) {
+      const apiError = err as ApiErrorResponse;
+      setError(getErrorMessage(apiError?.data?.message));
     }
   };
 

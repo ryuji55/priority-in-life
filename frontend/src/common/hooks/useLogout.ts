@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useLogoutMutation } from "../../store/api/authApi";
+import { ApiErrorResponse, getErrorMessage } from "../constants/errors";
 
 type Return = {
   handleLogout: () => Promise<void>;
@@ -18,8 +19,9 @@ export const useLogout = (): Return => {
     try {
       await mutation().unwrap();
       goToLoginPage();
-    } catch (error: any) {
-      setError(error?.data?.error || "予期せぬエラーが発生しました");
+    } catch (err) {
+      const apiError = err as ApiErrorResponse;
+      setError(getErrorMessage(apiError?.data?.message));
     }
   };
 
