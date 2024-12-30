@@ -2,6 +2,7 @@ import { FC } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { useLogin } from "../../hooks/useLogin";
+import { ROUTES } from "../../constants/route";
 
 type IFormInput = {
   firstName: string;
@@ -11,9 +12,9 @@ type IFormInput = {
 
 export const LoginPage: FC = () => {
   const navigate = useNavigate();
-  const goToHomePage = () => navigate("/");
-  const goToRegisterPage = () => navigate("/register");
-  const goToPasswordForgotPage = () => navigate("/password/forgot");
+  const goToHomePage = () => navigate(ROUTES.HOME);
+  const goToRegisterPage = () => navigate(ROUTES.REGISTER);
+  const goToPasswordForgotPage = () => navigate(ROUTES.PASSWORD.FORGOT);
 
   const { onSubmit, error } = useLogin();
 

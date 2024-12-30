@@ -5,6 +5,8 @@ import {
   ApiErrorResponse,
   getErrorMessage,
 } from "../../../../constants/errors";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../../../../constants/route";
 
 type IFormInput = {
   email: string;
@@ -14,6 +16,8 @@ export const PasswordForgotPage: FC = () => {
   const { register, handleSubmit } = useForm<IFormInput>();
   const [mutation] = usePasswordForgotMutation();
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
+  const goToLoginPage = () => navigate(ROUTES.LOGIN);
 
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -36,6 +40,7 @@ export const PasswordForgotPage: FC = () => {
         />
         <button type="submit">送信</button>
       </form>
+      <button onClick={goToLoginPage}>ログインページ</button>
     </>
   );
 };
