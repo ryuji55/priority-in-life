@@ -3,12 +3,13 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 import { useNavigate } from "react-router-dom";
+import { ROUTES } from "./common/constants/route";
 
 function App() {
   const [count, setCount] = useState(0);
   const navigate = useNavigate();
-  const goToLoginPage = () => navigate("/login");
-  const goToRegisterPage = () => navigate("/register");
+  const goToLoginPage = () => navigate(ROUTES.LOGIN);
+  const goToRegisterPage = () => navigate(ROUTES.REGISTER);
 
   return (
     <>
