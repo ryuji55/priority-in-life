@@ -2,6 +2,7 @@ import { useState } from "react";
 import { SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { useRegisterMutation } from "../../store/api/registerApi";
+import { ApiErrorResponse, getErrorMessage } from "../constants/errors";
 
 type IFormInput = {
   firstName: string;
@@ -31,8 +32,9 @@ export const useRegister = (): Return => {
         password: data.password,
       }).unwrap();
       goToAuthPage();
-    } catch (error: any) {
-      setError(error?.data?.error || "予期せぬエラーが発生しました");
+    } catch (err) {
+      const apiError = err as ApiErrorResponse;
+      setError(getErrorMessage(apiError?.data?.message));
     }
   };
 

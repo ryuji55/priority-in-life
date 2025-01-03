@@ -25,11 +25,15 @@ export const LoginPage: FC = () => {
       <p>{error}</p>
       <h1>ログインページ</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <label>メールアドレス</label>
-        <input {...register("email")} />
-        <label>パスワード</label>
-        <input {...register("password")} />
-        <input type="submit" />
+        <label>
+          メールアドレス
+          <input {...register("email")} />
+        </label>
+        <label>
+          パスワード
+          <input {...register("password")} />
+        </label>
+        <button type="submit">送信</button>
       </form>
       <button onClick={goToHomePage}>ホームページ</button>
       <button onClick={goToRegisterPage}>登録ページ</button>

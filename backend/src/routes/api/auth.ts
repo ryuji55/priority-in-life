@@ -29,26 +29,28 @@ router.get("/me", (req: any, res: any) => {
 });
 
 router.post("/login", (req: any, res: any) => {
-  // passportの認証処理
-  passport.authenticate("local", (err: any, user: any, info: any) => {
-    if (err) {
-      console.error("AppError: Authenticate", err);
-      return res.status(500).end();
-    }
-    if (!user) {
-      return res.status(400).json({ message: "LOGIN_FAILED" });
-    }
-    // ログイン処理
-    req.login(user, (err: any) => {
+  const authenticateFunction = passport.authenticate(
+    "local",
+    (err: any, user: any, info: any) => {
       if (err) {
-        console.error("AppError: Login", err);
+        console.error("AppError: Authenticate", err);
         return res.status(500).end();
       }
-      // パスワードを除外してユーザー情報を返す
-      const { password: _, ...userWithoutPassword } = user;
-      return res.status(200).json({ user: userWithoutPassword });
-    });
-  });
+      if (!user) {
+        return res.status(400).json({ message: "LOGIN_FAILED" });
+      }
+      req.login(user, (err: any) => {
+        if (err) {
+          console.error("AppError: Login", err);
+          return res.status(500).end();
+        }
+        // パスワードを除外してユーザー情報を返す
+        const { password: _, ...userWithoutPassword } = user;
+        return res.status(200).json({ user: userWithoutPassword });
+      });
+    }
+  );
+  authenticateFunction(req, res);
 });
 
 router.post("/logout", (req: any, res: any) => {
