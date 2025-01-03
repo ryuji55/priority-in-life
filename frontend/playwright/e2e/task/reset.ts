@@ -7,7 +7,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export const tasks = {
   "db:reset": async () => {
     const backendPath = path.resolve(__dirname, "../../../../backend");
-    execSync("npx prisma migrate reset -f", {
+    execSync("npm run refresh-db", {
       stdio: "inherit",
       cwd: backendPath,
     });
