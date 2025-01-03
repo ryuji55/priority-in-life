@@ -24,13 +24,19 @@ export const RegisterPage: FC = () => {
       {error && <p>{error}</p>}
       <h1>登録ページ</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <label>名前</label>
-        <input {...register("firstName")} />
-        <label>メールアドレス</label>
-        <input {...register("email")} />
-        <label>パスワード</label>
-        <input {...register("password")} />
-        <input type="submit" />
+        <label>
+          名前
+          <input {...register("firstName")} />
+        </label>
+        <label>
+          メールアドレス
+          <input {...register("email")} />
+        </label>
+        <label>
+          パスワード
+          <input {...register("password")} />
+        </label>
+        <button type="submit">送信</button>
       </form>
       <button onClick={goToHomePage}>ホームページ</button>
       <button onClick={goToLoginPage}>ログインページ</button>
