@@ -99,6 +99,7 @@ router.post("/password/forgot", async (req: any, res: any) => {
     const resetUrl = `${process.env.FRONTEND_URL}/password/reset/${resetPasswordToken}`;
 
     await mailService.sendPasswordResetMail(email, resetUrl);
+    res.status(200).end();
   } catch (error) {
     console.error("AppError: PasswordReset", error);
     res.status(500).end();
@@ -135,7 +136,8 @@ router.post("/password/reset", async (req: any, res: any) => {
       },
     });
 
-    res.status(200);
+    const { password: _, ...userWithoutPassword } = user;
+    return res.status(200).json({ user: userWithoutPassword });
   } catch (error) {
     console.error("AppError: PasswordReset", error);
     res.status(500).end();

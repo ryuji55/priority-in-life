@@ -25,9 +25,14 @@ export const useLogin = (): Return => {
 
   const onSubmit: SubmitHandler<IFormInput> = async ({ email, password }) => {
     try {
-      await mutation({ email: email, password: password }).unwrap();
-      console.log("ログイン成功");
-      goToAuthPage();
+      const response = await mutation({
+        email: email,
+        password: password,
+      }).unwrap();
+      if (response) {
+        console.log("ログイン成功");
+        goToAuthPage();
+      }
     } catch (err) {
       const apiError = err as ApiErrorResponse;
       setError(getErrorMessage(apiError?.data?.message));
