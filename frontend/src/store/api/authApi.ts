@@ -47,7 +47,7 @@ export const authApi = createApi({
         body,
       }),
     }),
-    passwordReset: builder.mutation<void, PasswordResetRequest>({
+    passwordReset: builder.mutation<User, PasswordResetRequest>({
       query: (body) => ({
         url: "password/reset",
         method: "POST",

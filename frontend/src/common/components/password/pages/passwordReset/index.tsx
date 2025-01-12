@@ -2,6 +2,8 @@ import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import { usePasswordResetMutation } from "../../../../../store/api/authApi";
 import { ApiErrorResponse, errors } from "../../../../constants/errors";
+import { useNavigate, useParams } from "react-router-dom";
+import { ROUTES } from "../../../../constants/route";
 
 type IFormInput = {
   newPassword: string;
@@ -12,10 +14,24 @@ export const PasswordResetPage: FC = () => {
   const { register, handleSubmit } = useForm<IFormInput>();
   const [mutation] = usePasswordResetMutation();
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
+  const goToLoginPage = () => navigate(ROUTES.LOGIN);
+  const token = useParams().token;
+  if (!token) {
+    goToLoginPage();
+  }
 
   const onSubmit = handleSubmit(async (data) => {
+    const mutationData = {
+      newPassword: data.newPassword,
+      token: token!,
+    };
     try {
-      await mutation(data).unwrap();
+      const response = await mutation(mutationData).unwrap();
+      if (response) {
+        goToLoginPage();
+        console.log("mutation成功", response);
+      }
     } catch (err) {
       const apiError = err as ApiErrorResponse;
       const errorMessage =
@@ -40,17 +56,6 @@ export const PasswordResetPage: FC = () => {
               {...register("newPassword")}
               className="w-full px-3 py-2 mt-1 border rounded shadow appearance-none focus:outline-none focus:ring focus:border-blue-300"
               placeholder="新しいパスワード"
-            />
-          </label>
-        </div>
-        <div className="mb-6">
-          <label className="block mb-2 text-sm font-bold text-gray-700">
-            トークン
-            <input
-              type="text"
-              {...register("token")}
-              className="w-full px-3 py-2 mt-1 border rounded shadow appearance-none focus:outline-none focus:ring focus:border-blue-300"
-              placeholder="リセットトークン"
             />
           </label>
         </div>
