@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import { useLoginMutation } from "../../store/api/authApi";
 import { SubmitHandler } from "react-hook-form";
 import { ApiErrorResponse, getErrorMessage } from "../constants/errors";
+import { ROUTES } from "../constants/route";
 
 type Return = {
   onSubmit: SubmitHandler<IFormInput>;
@@ -17,7 +18,7 @@ type IFormInput = {
 
 export const useLogin = (): Return => {
   const navigate = useNavigate();
-  const goToAuthPage = () => navigate("/auth");
+  const goToAuthPage = () => navigate(ROUTES.AUTH.ROOT);
   const [error, setError] = useState<string | null>(null);
 
   const [mutation] = useLoginMutation();

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useLogoutMutation } from "../../store/api/authApi";
 import { ApiErrorResponse, getErrorMessage } from "../constants/errors";
+import { ROUTES } from "../constants/route";
 
 type Return = {
   handleLogout: () => Promise<void>;
@@ -10,7 +11,7 @@ type Return = {
 
 export const useLogout = (): Return => {
   const navigate = useNavigate();
-  const goToLoginPage = () => navigate("/login");
+  const goToLoginPage = () => navigate(ROUTES.LOGIN);
   const [error, setError] = useState<string | null>(null);
 
   const [mutation] = useLogoutMutation();

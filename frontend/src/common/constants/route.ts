@@ -4,6 +4,10 @@ export const ROUTES = {
   REGISTER: "/register",
   PASSWORD: {
     FORGOT: "/password/forgot",
-    RESET: "/password/reset",
+    RESET: "/password/reset/:token",
+  },
+  AUTH: {
+    ROOT: "/auth",
+    TODO: "/auth/todo",
   },
 } as const;

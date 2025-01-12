@@ -3,6 +3,7 @@ import { SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { useRegisterMutation } from "../../store/api/registerApi";
 import { ApiErrorResponse, getErrorMessage } from "../constants/errors";
+import { ROUTES } from "../constants/route";
 
 type IFormInput = {
   firstName: string;
@@ -18,7 +19,7 @@ type Return = {
 export const useRegister = (): Return => {
   const navigate = useNavigate();
 
-  const goToAuthPage = () => navigate("/auth");
+  const goToAuthPage = () => navigate(ROUTES.AUTH.ROOT);
 
   const [error, setError] = useState<string | null>(null);
 

@@ -7,6 +7,8 @@ import { useGetMeQuery } from "./store/api/authApi";
 import App from "./App";
 import { PasswordForgotPage } from "./common/components/password/pages/passwordForgot";
 import { PasswordResetPage } from "./common/components/password/pages/passwordReset";
+import { TodoPage } from "./user/components/auth/pages/todo";
+import { ROUTES } from "./common/constants/route";
 
 type PrivateRouteProps = {
   children: React.ReactNode;
@@ -28,16 +30,24 @@ export const AppRoute: FC = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/password/forgot" element={<PasswordForgotPage />} />
-        <Route path="/password/reset/:token" element={<PasswordResetPage />} />
+        <Route path={ROUTES.HOME} element={<App />} />
+        <Route path={ROUTES.LOGIN} element={<LoginPage />} />
+        <Route path={ROUTES.REGISTER} element={<RegisterPage />} />
+        <Route path={ROUTES.PASSWORD.FORGOT} element={<PasswordForgotPage />} />
+        <Route path={ROUTES.PASSWORD.RESET} element={<PasswordResetPage />} />
         <Route
           path="/auth"
           element={
             <PrivateRoute>
               <AuthPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/auth/todo"
+          element={
+            <PrivateRoute>
+              <TodoPage />
             </PrivateRoute>
           }
         />
