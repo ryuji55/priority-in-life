@@ -6,6 +6,7 @@ import passport from "passport";
 import { registerRouter } from "./routes/api/register";
 import { configurePassport } from "./config/passport";
 import { authRouter } from "./routes/api/auth";
+import { todoRouter } from "./routes/api/todo";
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -69,6 +70,7 @@ app.get("/api/test", (req: Request, res: Response) => {
 
 app.use("/api/register", registerRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/todo", todoRouter);
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
