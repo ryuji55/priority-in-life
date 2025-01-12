@@ -1,5 +1,11 @@
 import { FC } from "react";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router";
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+  useParams,
+} from "react-router";
 import { LoginPage } from "./common/components/login";
 import { RegisterPage } from "./common/components/register";
 import { AuthPage } from "./user/components/auth";
@@ -14,14 +20,56 @@ type PrivateRouteProps = {
   children: React.ReactNode;
 };
 
+const PRIVATE_ROUTES = [
+  {
+    path: ROUTES.AUTH.ROOT,
+    element: <AuthPage />,
+  },
+  {
+    path: ROUTES.AUTH.TODO,
+    element: <TodoPage />,
+  },
+] as const;
+
+const PUBLIC_ROUTES = [
+  {
+    path: ROUTES.HOME,
+    element: <App />,
+  },
+  {
+    path: ROUTES.LOGIN,
+    element: <LoginPage />,
+  },
+  {
+    path: ROUTES.REGISTER,
+    element: <RegisterPage />,
+  },
+  {
+    path: ROUTES.PASSWORD.FORGOT,
+    element: <PasswordForgotPage />,
+  },
+  {
+    path: ROUTES.PASSWORD.RESET,
+    element: <PasswordResetPage />,
+  },
+] as const;
+
 const PrivateRoute: FC<PrivateRouteProps> = ({ children }) => {
   const { data: user, isLoading } = useGetMeQuery();
+  const isLoginPath = useParams().path === ROUTES.LOGIN;
 
   if (isLoading) {
     return <p>Loading...</p>;
   }
+
+  // すでにログインしている場合はAuthページへリダイレクト
+  if (user && isLoginPath) {
+    return <Navigate to={ROUTES.AUTH.ROOT} />;
+  }
+
+  // 未ログインの場合はログインページへ
   if (!user) {
-    return <Navigate to="/login" />;
+    return <Navigate to={ROUTES.LOGIN} />;
   }
   return <>{children}</>;
 };
@@ -30,27 +78,19 @@ export const AppRoute: FC = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path={ROUTES.HOME} element={<App />} />
-        <Route path={ROUTES.LOGIN} element={<LoginPage />} />
-        <Route path={ROUTES.REGISTER} element={<RegisterPage />} />
-        <Route path={ROUTES.PASSWORD.FORGOT} element={<PasswordForgotPage />} />
-        <Route path={ROUTES.PASSWORD.RESET} element={<PasswordResetPage />} />
-        <Route
-          path="/auth"
-          element={
-            <PrivateRoute>
-              <AuthPage />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/auth/todo"
-          element={
-            <PrivateRoute>
-              <TodoPage />
-            </PrivateRoute>
-          }
-        />
+        {PUBLIC_ROUTES.map(({ path, element }) => (
+          <Route key={path} path={path} element={element} />
+        ))}
+
+        {PRIVATE_ROUTES.map(({ path, element }) => (
+          <Route
+            key={path}
+            path={path}
+            element={<PrivateRoute>{element}</PrivateRoute>}
+          />
+        ))}
+
+        <Route path="*" element={<Navigate to={ROUTES.HOME} />} />
       </Routes>
     </BrowserRouter>
   );

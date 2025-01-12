@@ -18,7 +18,7 @@ export const todoApi = createApi({
   tagTypes: ["Todo"],
   endpoints: (builder) => ({
     getTodos: builder.query<TodoResponse[], void>({
-      query: () => "todo",
+      query: () => "todo/my",
       providesTags: ["Todo"],
     }),
     createTodo: builder.mutation<void, TodoRequest>({
