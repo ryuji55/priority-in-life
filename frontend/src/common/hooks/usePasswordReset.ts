@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router";
 import { usePasswordResetMutation } from "../../store/api/authApi";
 import { SubmitHandler } from "react-hook-form";
 import { ApiErrorResponse, getErrorMessage } from "../constants/errors";
+import { ROUTES } from "../constants/route";
 
 type IFormInput = {
   newPassword: string;
@@ -19,7 +20,7 @@ export const usePasswordReset = (): Return => {
     throw new Error("token not found");
   }
   const navigate = useNavigate();
-  const goToLoginPage = () => navigate("/login");
+  const goToLoginPage = () => navigate(ROUTES.LOGIN);
   const [error, setError] = useState<string | null>(null);
 
   const [mutation] = usePasswordResetMutation();
