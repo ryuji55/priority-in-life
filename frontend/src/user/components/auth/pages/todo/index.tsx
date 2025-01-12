@@ -1,26 +1,21 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import { TodoCard } from "./parts/todoCard";
-import { useForm } from "react-hook-form";
-import dayjs from "dayjs";
-
-type IFormInput = {
-  title: string;
-  content: string;
-  date: string;
-};
+import { useGetTodosQuery } from "../../../../../store/api/todoApi";
+import { useCreateTodo } from "../../hooks/useCreateTodo";
 
 export const TodoPage: FC = () => {
-  const [todos, setTodos] = useState<IFormInput[]>([]);
-  const now = dayjs().format("YYYY/MM/DD HH:mm:ss");
-  const { register, handleSubmit, reset } = useForm<IFormInput>();
+  const { data, isLoading } = useGetTodosQuery();
 
-  const onSubmit = (data: IFormInput) => {
-    setTodos([...todos, { ...data, date: now }]);
-    reset();
-  };
+  const { onSubmit, error, register, handleSubmit } = useCreateTodo();
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <div className="p-4">
       <h1 className="mb-4 text-3xl">Todo Page</h1>
+      <p>{error}</p>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
         <label>
           Title
@@ -43,9 +38,15 @@ export const TodoPage: FC = () => {
           カードを作る
         </button>
       </form>
-      {todos.length > 0 &&
-        todos.map(({ title, content, date }, index) => (
-          <TodoCard key={index} title={title} content={content} date={date} />
+      {data &&
+        data?.length > 0 &&
+        data.map(({ title, content, createdAt }, index) => (
+          <TodoCard
+            key={index}
+            title={title}
+            content={content}
+            createdAt={createdAt}
+          />
         ))}
     </div>
   );
