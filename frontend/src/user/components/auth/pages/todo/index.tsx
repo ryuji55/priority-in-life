@@ -1,18 +1,21 @@
 import { FC, useState } from "react";
 import { TodoCard } from "./parts/todoCard";
 import { useForm } from "react-hook-form";
+import dayjs from "dayjs";
 
 type IFormInput = {
   title: string;
   content: string;
+  date: string;
 };
 
 export const TodoPage: FC = () => {
-  const { register, handleSubmit, reset } = useForm<IFormInput>();
   const [todos, setTodos] = useState<IFormInput[]>([]);
+  const now = dayjs().format("YYYY/MM/DD HH:mm:ss");
+  const { register, handleSubmit, reset } = useForm<IFormInput>();
 
   const onSubmit = (data: IFormInput) => {
-    setTodos([...todos, data]);
+    setTodos([...todos, { ...data, date: now }]);
     reset();
   };
   return (
@@ -41,8 +44,8 @@ export const TodoPage: FC = () => {
         </button>
       </form>
       {todos.length > 0 &&
-        todos.map(({ title, content }, index) => (
-          <TodoCard key={index} title={title} content={content} />
+        todos.map(({ title, content, date }, index) => (
+          <TodoCard key={index} title={title} content={content} date={date} />
         ))}
     </div>
   );
