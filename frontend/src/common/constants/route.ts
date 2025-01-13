@@ -10,4 +10,5 @@ export const ROUTES = {
     ROOT: "/auth",
     TODO: "/auth/todo",
   },
+  SLEEP_RECORD: "/sleepRecord",
 } as const;
