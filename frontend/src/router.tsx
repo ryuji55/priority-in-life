@@ -15,6 +15,7 @@ import { PasswordForgotPage } from "./common/components/password/pages/passwordF
 import { PasswordResetPage } from "./common/components/password/pages/passwordReset";
 import { TodoPage } from "./user/components/auth/pages/todo";
 import { ROUTES } from "./common/constants/route";
+import { SleepRecordPage } from "./user/components/auth/pages/sleepRecord";
 
 type PrivateRouteProps = {
   children: React.ReactNode;
@@ -28,6 +29,10 @@ const PRIVATE_ROUTES = [
   {
     path: ROUTES.AUTH.TODO,
     element: <TodoPage />,
+  },
+  {
+    path: ROUTES.SLEEP_RECORD,
+    element: <SleepRecordPage />,
   },
 ] as const;
 

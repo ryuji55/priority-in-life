@@ -23,6 +23,7 @@ model Users {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   Todos     Todos[]
+  SleepRecords SleepRecords[]
 }
 
 model Todos {
@@ -33,4 +34,13 @@ model Todos {
   updatedAt DateTime @updatedAt
   UserId    String
   User      Users      @relation(fields: [UserId], references: [id])
+}
+
+model SleepRecords {
+  id        String   @id @default(cuid())
+  UserId    String
+  hours     Float    // 睡眠時間
+  date      DateTime // 睡眠した日
+  createdAt DateTime @default(now())
+  User      Users     @relation(fields: [UserId], references: [id])
 }
