@@ -8,6 +8,7 @@ export const AuthPage: FC = () => {
   const navigate = useNavigate();
   const goToTodoPage = () => navigate(ROUTES.AUTH.TODO);
   const goToSleepRecordPage = () => navigate(ROUTES.SLEEP_RECORD);
+  const goToWeatherPage = () => navigate(ROUTES.WEATHER);
 
   return (
     <>
@@ -15,6 +16,7 @@ export const AuthPage: FC = () => {
       <h1>ログインしているページ</h1>
       <button onClick={goToTodoPage}>TODOページ</button>
       <button onClick={goToSleepRecordPage}>睡眠記録ページ</button>
+      <button onClick={goToWeatherPage}>天気ページ</button>
       <button onClick={handleLogout}>ログアウト</button>
     </>
   );
