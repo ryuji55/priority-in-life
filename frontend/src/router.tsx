@@ -16,6 +16,7 @@ import { PasswordResetPage } from "./common/components/password/pages/passwordRe
 import { TodoPage } from "./user/components/auth/pages/todo";
 import { ROUTES } from "./common/constants/route";
 import { SleepRecordPage } from "./user/components/auth/pages/sleepRecord";
+import { WeatherPage } from "./user/components/auth/pages/weather";
 
 type PrivateRouteProps = {
   children: React.ReactNode;
@@ -33,6 +34,10 @@ const PRIVATE_ROUTES = [
   {
     path: ROUTES.SLEEP_RECORD,
     element: <SleepRecordPage />,
+  },
+  {
+    path: ROUTES.WEATHER,
+    element: <WeatherPage />,
   },
 ] as const;
 

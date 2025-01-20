@@ -11,4 +11,5 @@ export const ROUTES = {
     TODO: "/auth/todo",
   },
   SLEEP_RECORD: "/sleepRecord",
+  WEATHER: "/weather",
 } as const;
